@@ -1,0 +1,73 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #16162a;
+  border-right: 1px solid #2a2a45;
+  overflow: hidden;
+}
+
+.sidebar__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 14px 12px;
+  border-bottom: 1px solid #2a2a45;
+}
+
+.sidebar__title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #c0c0e0;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.sidebar__count {
+  background: #7c6af7;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 99px;
+  padding: 2px 8px;
+}
+
+.sidebar__list-wrapper {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.sidebar__list-wrapper::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar__list-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar__list-wrapper::-webkit-scrollbar-thumb {
+  background: #333355;
+  border-radius: 4px;
+}
+
+.task-list__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 40px 20px;
+  color: #44446a;
+  font-size: 13px;
+  text-align: center;
+}
+
+.sidebar__footer {
+  padding: 10px 14px;
+  font-size: 12px;
+  color: #44446a;
+  border-top: 1px solid #2a2a45;
+  text-align: center;
+}

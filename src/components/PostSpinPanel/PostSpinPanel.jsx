@@ -1,0 +1,54 @@
+import { PRIORITY_COLORS } from '../../utils/taskReducer';
+import './PostSpinPanel.css';
+
+export default function PostSpinPanel({ task, dispatch, onSpinAgain, onStartTimer }) {
+  function handleBlocker() {
+    dispatch({ type: 'BLOCK_TASK', payload: { id: task.id } });
+    onSpinAgain(); // clear spin result, go back to wheel
+  }
+
+  return (
+    <div className="post-spin">
+      <div className="post-spin__selected">
+        <span className="post-spin__label">Selected</span>
+        <div className="post-spin__task-name">{task.name}</div>
+        <span
+          className="post-spin__priority"
+          style={{ background: PRIORITY_COLORS[task.priority] }}
+        >
+          {task.priority} Priority
+        </span>
+      </div>
+
+      <div className="post-spin__section">
+        <p className="post-spin__section-label">Focus session</p>
+        <div className="post-spin__timer-btns">
+          {[15, 30, 60].map((min) => (
+            <button
+              key={min}
+              className="post-spin__timer-btn"
+              onClick={() => onStartTimer(task.id, min * 60)}
+            >
+              {min}m
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="post-spin__section post-spin__section--actions">
+        <button
+          className="post-spin__action-btn post-spin__action-btn--again"
+          onClick={onSpinAgain}
+        >
+          Spin Again
+        </button>
+        <button
+          className="post-spin__action-btn post-spin__action-btn--blocker"
+          onClick={handleBlocker}
+        >
+          Blocker
+        </button>
+      </div>
+    </div>
+  );
+}

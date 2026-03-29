@@ -1,0 +1,69 @@
+/* ── Layout ────────────────────────────────────────────── */
+.app {
+  display: grid;
+  grid-template-columns: 300px 1fr 300px;
+  grid-template-rows: 100vh;
+  overflow: hidden;
+  background: #12121e;
+  color: #e0e0f0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.app__center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px solid #2a2a45;
+  border-right: 1px solid #2a2a45;
+  overflow: hidden;
+}
+
+.app__right {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  background: #14142a;
+}
+
+/* ── Right panel idle state ────────────────────────────── */
+.app__right-idle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  height: 100%;
+  padding: 30px;
+  text-align: center;
+  color: #44446a;
+}
+
+.app__right-idle-icon {
+  font-size: 48px;
+  opacity: 0.4;
+}
+
+.app__right-idle p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 200px;
+}
+
+/* ── Responsive ────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .app {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    height: auto;
+    overflow: auto;
+  }
+
+  .app__center {
+    border-left: none;
+    border-right: none;
+    border-top: 1px solid #2a2a45;
+    border-bottom: 1px solid #2a2a45;
+    padding: 20px 0;
+  }
+}
