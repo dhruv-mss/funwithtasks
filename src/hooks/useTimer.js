@@ -2,10 +2,12 @@ import { useState, useEffect, useRef } from 'react';
 
 export function useTimer(initialSeconds, onEnd) {
   const [secondsLeft, setSecondsLeft] = useState(initialSeconds);
+  const [paused, setPaused] = useState(false);
   const onEndRef = useRef(onEnd);
   onEndRef.current = onEnd;
 
   useEffect(() => {
+    if (paused) return;
     if (secondsLeft <= 0) {
       onEndRef.current();
       return;
@@ -20,9 +22,17 @@ export function useTimer(initialSeconds, onEnd) {
       });
     }, 1000);
     return () => clearInterval(id);
-  }, [secondsLeft]);
+  }, [secondsLeft, paused]);
 
-  return { secondsLeft };
+  function pause() {
+    setPaused(true);
+  }
+
+  function resume() {
+    setPaused(false);
+  }
+
+  return { secondsLeft, paused, pause, resume };
 }
 
 export function formatCountdown(seconds) {

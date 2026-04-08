@@ -1,12 +1,7 @@
 import { PRIORITY_COLORS } from '../../utils/taskReducer';
 import './PostSpinPanel.css';
 
-export default function PostSpinPanel({ task, dispatch, onSpinAgain, onStartTimer }) {
-  function handleBlocker() {
-    dispatch({ type: 'BLOCK_TASK', payload: { id: task.id } });
-    onSpinAgain(); // clear spin result, go back to wheel
-  }
-
+export default function PostSpinPanel({ task, onSpinAgain, onStartTimer }) {
   return (
     <div className="post-spin">
       <div className="post-spin__selected">
@@ -35,18 +30,12 @@ export default function PostSpinPanel({ task, dispatch, onSpinAgain, onStartTime
         </div>
       </div>
 
-      <div className="post-spin__section post-spin__section--actions">
+      <div className="post-spin__section">
         <button
           className="post-spin__action-btn post-spin__action-btn--again"
           onClick={onSpinAgain}
         >
           Spin Again
-        </button>
-        <button
-          className="post-spin__action-btn post-spin__action-btn--blocker"
-          onClick={handleBlocker}
-        >
-          Blocker
         </button>
       </div>
     </div>

@@ -4,11 +4,7 @@ import './TaskItem.css';
 
 export default function TaskItem({ task, dispatch, isActive }) {
   return (
-    <div
-      className={`task-item ${task.blocked ? 'task-item--blocked' : ''} ${
-        isActive ? 'task-item--active' : ''
-      }`}
-    >
+    <div className={`task-item ${isActive ? 'task-item--active' : ''}`}>
       <label className="task-item__check-label">
         <input
           type="checkbox"
@@ -29,9 +25,6 @@ export default function TaskItem({ task, dispatch, isActive }) {
           >
             {task.priority}
           </span>
-          {task.blocked && (
-            <span className="task-item__blocked-tag">Blocked</span>
-          )}
           {task.timeSpent > 0 && (
             <span className="task-item__time">
               ⏱ {formatTimeSpent(task.timeSpent)}
@@ -39,6 +32,15 @@ export default function TaskItem({ task, dispatch, isActive }) {
           )}
         </div>
       </div>
+
+      <button
+        className="task-item__delete"
+        onClick={() => dispatch({ type: 'DELETE_TASK', payload: { id: task.id } })}
+        title="Delete task"
+        aria-label="Delete task"
+      >
+        ×
+      </button>
     </div>
   );
 }

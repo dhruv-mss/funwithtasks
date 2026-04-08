@@ -52,6 +52,28 @@
   border-radius: 4px;
 }
 
+.sidebar__today {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 14px;
+  background: #1a1a35;
+  border-bottom: 1px solid #2a2a45;
+}
+
+.sidebar__today-count {
+  font-size: 12px;
+  font-weight: 700;
+  color: #7c6af7;
+  letter-spacing: 0.3px;
+}
+
+.sidebar__today-msg {
+  font-size: 11px;
+  color: #7070a0;
+  line-height: 1.4;
+}
+
 .task-list__empty {
   display: flex;
   flex-direction: column;

@@ -89,10 +89,6 @@
   transform: scale(0.96);
 }
 
-.post-spin__section--actions {
-  gap: 8px;
-}
-
 .post-spin__action-btn {
   width: 100%;
   padding: 12px;
@@ -116,14 +112,4 @@
 
 .post-spin__action-btn--again:hover {
   background: #2a2a50;
-}
-
-.post-spin__action-btn--blocker {
-  background: #2a1515;
-  color: #ef4444;
-  border: 1px solid #ef444433;
-}
-
-.post-spin__action-btn--blocker:hover {
-  background: #381818;
 }

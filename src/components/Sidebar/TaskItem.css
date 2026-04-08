@@ -11,9 +11,8 @@
   background: #1a1a2e;
 }
 
-.task-item--blocked {
-  border-left: 3px solid #ef4444;
-  padding-left: 11px;
+.task-item:hover .task-item__delete {
+  opacity: 1;
 }
 
 .task-item--active {
@@ -98,17 +97,32 @@
   text-transform: uppercase;
 }
 
-.task-item__blocked-tag {
-  font-size: 10px;
-  font-weight: 600;
-  padding: 2px 7px;
-  border-radius: 99px;
-  background: #3a1515;
-  color: #ef4444;
-  border: 1px solid #ef4444;
-}
-
 .task-item__time {
   font-size: 11px;
   color: #7070a0;
+}
+
+.task-item__delete {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  border: none;
+  background: transparent;
+  color: #555570;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s, background 0.15s, color 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin-top: 1px;
+}
+
+.task-item__delete:hover {
+  background: #3a1515;
+  color: #ef4444;
 }

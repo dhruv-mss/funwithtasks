@@ -6,13 +6,17 @@ export const PRIORITY_COLORS = {
   Low: '#22c55e',
 };
 
-const initialState = { tasks: [] };
+export const initialState = {
+  tasks: [],
+  completedToday: { count: 0, date: '' },
+};
+
+function todayStr() {
+  return new Date().toISOString().split('T')[0];
+}
 
 export function taskReducer(state, action) {
   switch (action.type) {
-    case 'LOAD':
-      return { ...state, tasks: action.payload };
-
     case 'ADD_TASK':
       return {
         ...state,
@@ -22,25 +26,27 @@ export function taskReducer(state, action) {
             id: crypto.randomUUID(),
             name: action.payload.name.trim(),
             priority: action.payload.priority,
-            blocked: false,
             timeSpent: 0,
             createdAt: Date.now(),
           },
         ],
       };
 
-    case 'COMPLETE_TASK':
+    case 'COMPLETE_TASK': {
+      const today = todayStr();
+      const prevCount =
+        state.completedToday.date === today ? state.completedToday.count : 0;
       return {
         ...state,
         tasks: state.tasks.filter((t) => t.id !== action.payload.id),
+        completedToday: { count: prevCount + 1, date: today },
       };
+    }
 
-    case 'BLOCK_TASK':
+    case 'DELETE_TASK':
       return {
         ...state,
-        tasks: state.tasks.map((t) =>
-          t.id === action.payload.id ? { ...t, blocked: !t.blocked } : t
-        ),
+        tasks: state.tasks.filter((t) => t.id !== action.payload.id),
       };
 
     case 'ADD_TIME':
@@ -57,5 +63,3 @@ export function taskReducer(state, action) {
       return state;
   }
 }
-
-export { initialState };

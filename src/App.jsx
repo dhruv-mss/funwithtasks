@@ -1,4 +1,4 @@
-import { useReducer, useState, useEffect, useRef } from 'react';
+import { useReducer, useState, useEffect } from 'react';
 import { taskReducer, initialState } from './utils/taskReducer';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import Sidebar from './components/Sidebar/Sidebar';
@@ -7,24 +7,23 @@ import PostSpinPanel from './components/PostSpinPanel/PostSpinPanel';
 import CountdownTimer from './components/CountdownTimer/CountdownTimer';
 import './App.css';
 
-const STORAGE_KEY = 'funwithtasks_v1';
+const STORAGE_KEY = 'funwithtasks_v2';
 
 export default function App() {
-  const [persistedTasks, setPersistedTasks] = useLocalStorage(STORAGE_KEY, []);
+  const [persistedState, setPersistedState] = useLocalStorage(STORAGE_KEY, initialState);
 
   const [state, dispatch] = useReducer(taskReducer, {
     ...initialState,
-    tasks: persistedTasks,
+    ...persistedState,
   });
 
   const [spinResult, setSpinResult] = useState(null);   // Task | null
   const [timerConfig, setTimerConfig] = useState(null); // { taskId, taskName, taskPriority, seconds } | null
-  const startTimeRef = useRef(null);
 
-  // Sync tasks to localStorage
+  // Sync full state to localStorage
   useEffect(() => {
-    setPersistedTasks(state.tasks);
-  }, [state.tasks]);
+    setPersistedState(state);
+  }, [state]);
 
   // If the spinResult task was completed/removed externally, clear it
   useEffect(() => {
@@ -51,7 +50,6 @@ export default function App() {
   function handleStartTimer(taskId, seconds) {
     const task = state.tasks.find((t) => t.id === taskId);
     if (!task) return;
-    startTimeRef.current = Date.now();
     setTimerConfig({
       taskId,
       taskName: task.name,
@@ -63,7 +61,6 @@ export default function App() {
 
   function handleTimerEnd() {
     setTimerConfig(null);
-    startTimeRef.current = null;
   }
 
   const activeTaskId = timerConfig?.taskId ?? spinResult?.id ?? null;
@@ -75,14 +72,12 @@ export default function App() {
       taskName={timerConfig.taskName}
       taskPriority={timerConfig.taskPriority}
       initialSeconds={timerConfig.seconds}
-      startTime={startTimeRef.current}
       dispatch={dispatch}
       onEnd={handleTimerEnd}
     />
   ) : spinResult ? (
     <PostSpinPanel
       task={spinResult}
-      dispatch={dispatch}
       onSpinAgain={handleSpinAgain}
       onStartTimer={handleStartTimer}
     />
@@ -99,6 +94,7 @@ export default function App() {
         tasks={state.tasks}
         dispatch={dispatch}
         activeTaskId={activeTaskId}
+        completedToday={state.completedToday}
       />
       <main className="app__center">
         <SpinnerWheel
