@@ -1,0 +1,135 @@
+.followup {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.followup__tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #14b8a6;
+}
+
+.followup__title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+  color: #e0e0f0;
+}
+
+.followup__sub {
+  margin: -6px 0 0;
+  font-size: 12px;
+  color: #555570;
+}
+
+.followup__list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.followup__person {
+  background: #16162e;
+  border: 1px solid #2a2a50;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.followup__person-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: #1a1a35;
+  border-bottom: 1px solid #2a2a50;
+}
+
+.followup__avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #14b8a620;
+  border: 1px solid #14b8a6;
+  color: #14b8a6;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.followup__name {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 600;
+  color: #c0c0e0;
+}
+
+.followup__count {
+  font-size: 10px;
+  font-weight: 700;
+  background: #14b8a620;
+  color: #14b8a6;
+  border-radius: 99px;
+  padding: 1px 7px;
+}
+
+.followup__task {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-bottom: 1px solid #1e1e38;
+}
+
+.followup__task:last-child { border-bottom: none; }
+
+.followup__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.followup__task-name {
+  flex: 1;
+  font-size: 13px;
+  color: #9090c0;
+}
+
+.followup__done-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  border: 1px solid #22c55e44;
+  background: transparent;
+  color: #22c55e;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+.followup__done-btn:hover { background: #1a3020; }
+
+.followup__spin-again {
+  width: 100%;
+  padding: 11px;
+  border-radius: 8px;
+  border: 1px solid #333355;
+  background: #1a1a2e;
+  color: #7070a0;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.followup__spin-again:hover { background: #222240; color: #a0a0c0; }

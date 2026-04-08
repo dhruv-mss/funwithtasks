@@ -1,0 +1,136 @@
+.goal-result {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.goal-result__tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #f59e0b;
+}
+
+.goal-result__title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+  color: #e0e0f0;
+  line-height: 1.2;
+}
+
+.goal-result__context {
+  background: #1a1a30;
+  border-radius: 8px;
+  padding: 10px 12px;
+  border-left: 3px solid #7c6af7;
+}
+
+.goal-result__what {
+  margin: 0 0 4px;
+  font-size: 12px;
+  color: #9090c0;
+  font-style: italic;
+}
+
+.goal-result__why {
+  margin: 0;
+  font-size: 12px;
+  color: #7070a0;
+}
+
+.goal-result__mass {
+  background: #201c10;
+  border: 1px solid #f59e0b44;
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.goal-result__mass-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #f59e0b;
+}
+
+.goal-result__mass-task {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #e0e0f0;
+}
+
+.goal-result__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.goal-result__timer-btns {
+  display: flex;
+  gap: 6px;
+}
+
+.goal-result__timer-btn {
+  flex: 1;
+  padding: 9px 0;
+  border-radius: 8px;
+  border: 2px solid #f59e0b55;
+  background: transparent;
+  color: #f59e0b;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.goal-result__timer-btn:hover { background: #f59e0b; color: #12121e; border-color: #f59e0b; }
+
+.goal-result__others {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.goal-result__others-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #44446a;
+  margin-bottom: 2px;
+}
+
+.goal-result__other-task {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #7070a0;
+  padding: 4px 0;
+  border-bottom: 1px solid #1e1e35;
+}
+
+.goal-result__spin-again {
+  width: 100%;
+  padding: 11px;
+  border-radius: 8px;
+  border: 1px solid #333355;
+  background: #1a1a2e;
+  color: #7070a0;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  margin-top: 4px;
+}
+.goal-result__spin-again:hover { background: #222240; color: #a0a0c0; }
