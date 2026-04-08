@@ -1,6 +1,29 @@
 import { PRIORITY_COLORS } from '../../utils/rpmReducer';
 import './GoalResultModal.css';
 
+function TimerRow({ task, onStartTimer }) {
+  return (
+    <div className="goal-result__task-row">
+      <span
+        className="goal-result__dot"
+        style={{ background: PRIORITY_COLORS[task.priority] }}
+      />
+      <span className="goal-result__task-name">{task.name}</span>
+      <div className="goal-result__timer-btns">
+        {[15, 30, 60].map((min) => (
+          <button
+            key={min}
+            className="goal-result__timer-btn"
+            onClick={() => onStartTimer(task.id, min * 60)}
+          >
+            {min}m
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function GoalResultModal({ goal, tasks, onSpinAgain, onStartTimer }) {
   const goalTasks = goal.taskIds
     .map((id) => tasks.find((t) => t.id === id))
@@ -23,40 +46,21 @@ export default function GoalResultModal({ goal, tasks, onSpinAgain, onStartTimer
       {massTask && (
         <div className="goal-result__mass">
           <div className="goal-result__mass-label">⭐ #1 Action</div>
-          <div className="goal-result__mass-task">
-            <span
-              className="goal-result__dot"
-              style={{ background: PRIORITY_COLORS[massTask.priority] }}
-            />
-            {massTask.name}
-          </div>
-          <div className="goal-result__timer-btns">
-            {[15, 30, 60].map((min) => (
-              <button
-                key={min}
-                className="goal-result__timer-btn"
-                onClick={() => onStartTimer(massTask.id, min * 60)}
-              >
-                {min}m
-              </button>
-            ))}
-          </div>
+          <TimerRow task={massTask} onStartTimer={onStartTimer} />
         </div>
       )}
 
       {otherTasks.length > 0 && (
         <div className="goal-result__others">
-          <div className="goal-result__others-label">Other tasks in this goal</div>
+          <div className="goal-result__others-label">Other tasks</div>
           {otherTasks.map((task) => (
-            <div key={task.id} className="goal-result__other-task">
-              <span
-                className="goal-result__dot"
-                style={{ background: PRIORITY_COLORS[task.priority] }}
-              />
-              <span>{task.name}</span>
-            </div>
+            <TimerRow key={task.id} task={task} onStartTimer={onStartTimer} />
           ))}
         </div>
+      )}
+
+      {goalTasks.length === 0 && (
+        <p className="goal-result__empty">No tasks in this goal yet.</p>
       )}
 
       <button className="goal-result__spin-again" onClick={onSpinAgain}>

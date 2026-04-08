@@ -100,6 +100,7 @@ export default function SpinModal({ state, dispatch, onClose }) {
         tasks={state.tasks}
         dispatch={dispatch}
         onSpinAgain={handleSpinAgain}
+        onStartTimer={handleStartTimer}
       />
     );
   } else if (spinResult?.type === 'task') {

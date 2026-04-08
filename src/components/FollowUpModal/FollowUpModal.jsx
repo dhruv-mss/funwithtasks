@@ -1,7 +1,7 @@
 import { PRIORITY_COLORS } from '../../utils/rpmReducer';
 import './FollowUpModal.css';
 
-export default function FollowUpModal({ people, tasks, dispatch, onSpinAgain }) {
+export default function FollowUpModal({ people, tasks, dispatch, onSpinAgain, onStartTimer }) {
   const delegated = people
     .map((p) => ({
       ...p,
@@ -32,15 +32,27 @@ export default function FollowUpModal({ people, tasks, dispatch, onSpinAgain }) 
                   style={{ background: PRIORITY_COLORS[task.priority] }}
                 />
                 <span className="followup__task-name">{task.name}</span>
-                <button
-                  className="followup__done-btn"
-                  onClick={() =>
-                    dispatch({ type: 'COMPLETE_TASK', payload: { id: task.id } })
-                  }
-                  title="Mark done"
-                >
-                  ✓
-                </button>
+                <div className="followup__task-actions">
+                  {[15, 30, 60].map((min) => (
+                    <button
+                      key={min}
+                      className="followup__timer-btn"
+                      onClick={() => onStartTimer(task.id, min * 60)}
+                      title={`Focus ${min} min`}
+                    >
+                      {min}m
+                    </button>
+                  ))}
+                  <button
+                    className="followup__done-btn"
+                    onClick={() =>
+                      dispatch({ type: 'COMPLETE_TASK', payload: { id: task.id } })
+                    }
+                    title="Mark done"
+                  >
+                    ✓
+                  </button>
+                </div>
               </div>
             ))}
           </div>

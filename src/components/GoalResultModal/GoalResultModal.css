@@ -60,15 +60,6 @@
   color: #f59e0b;
 }
 
-.goal-result__mass-task {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #e0e0f0;
-}
-
 .goal-result__dot {
   width: 8px;
   height: 8px;
@@ -76,29 +67,64 @@
   flex-shrink: 0;
 }
 
+/* Shared task row used for both mass-action and other tasks */
+.goal-result__task-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 4px 0;
+  border-bottom: 1px solid #ffffff0a;
+}
+
+.goal-result__task-row:last-child { border-bottom: none; }
+
+.goal-result__task-name {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 500;
+  color: #d0d0f0;
+  min-width: 0;
+}
+
+/* Mass action section shows task name slightly larger */
+.goal-result__mass .goal-result__task-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #e0e0f0;
+}
+
 .goal-result__timer-btns {
   display: flex;
-  gap: 6px;
+  gap: 4px;
+  flex-shrink: 0;
 }
 
 .goal-result__timer-btn {
-  flex: 1;
-  padding: 9px 0;
-  border-radius: 8px;
-  border: 2px solid #f59e0b55;
+  padding: 5px 9px;
+  border-radius: 6px;
+  border: 1px solid #f59e0b44;
   background: transparent;
   color: #f59e0b;
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 700;
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s;
+  white-space: nowrap;
 }
 .goal-result__timer-btn:hover { background: #f59e0b; color: #12121e; border-color: #f59e0b; }
+
+/* For non-mass tasks, use a subtler purple tint */
+.goal-result__others .goal-result__timer-btn {
+  border-color: #7c6af744;
+  color: #9080d0;
+}
+.goal-result__others .goal-result__timer-btn:hover { background: #7c6af7; color: #fff; border-color: #7c6af7; }
 
 .goal-result__others {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 2px;
 }
 
 .goal-result__others-label {
@@ -107,17 +133,15 @@
   letter-spacing: 1px;
   text-transform: uppercase;
   color: #44446a;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
 
-.goal-result__other-task {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.goal-result__empty {
   font-size: 13px;
-  color: #7070a0;
-  padding: 4px 0;
-  border-bottom: 1px solid #1e1e35;
+  color: #44446a;
+  margin: 0;
+  text-align: center;
+  padding: 10px 0;
 }
 
 .goal-result__spin-again {
