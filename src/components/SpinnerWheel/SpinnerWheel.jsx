@@ -95,7 +95,7 @@ export default function SpinnerWheel({ spinItems = [], onSpinComplete }) {
     <div className="spinner-wheel">
       <div className="spinner-wheel__pointer-wrap">
         <svg viewBox="0 0 30 24" width="30" height="24">
-          <polygon points="15,22 0,0 30,0" fill="#f1f0ff" />
+          <polygon points="15,22 0,0 30,0" fill="#4a35c8" />
         </svg>
       </div>
 
@@ -109,7 +109,7 @@ export default function SpinnerWheel({ spinItems = [], onSpinComplete }) {
               transformOrigin: `${CX}px ${CY}px`,
             }}
           >
-            {isEmpty && <circle cx={CX} cy={CY} r={R} fill="#1e1e35" />}
+            {isEmpty && <circle cx={CX} cy={CY} r={R} fill="#ede9ff" />}
 
             {isSingle && !isEmpty && (
               <circle
@@ -172,12 +172,12 @@ export default function SpinnerWheel({ spinItems = [], onSpinComplete }) {
             )}
           </g>
 
-          <circle cx={CX} cy={CY} r={22} fill="#12121e" />
+          <circle cx={CX} cy={CY} r={22} fill="#f4f2ff" />
           <circle cx={CX} cy={CY} r={14} fill="#7c6af7" />
 
           {isEmpty && (
             <text x={CX} y={CY} textAnchor="middle" dominantBaseline="middle"
-              fill="#44446a" fontSize="13">
+              fill="#c0bcd8" fontSize="13">
               No items to spin
             </text>
           )}

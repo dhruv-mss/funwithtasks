@@ -14,6 +14,7 @@ import TaskPool from './components/TaskPool/TaskPool';
 import GoalCard from './components/GoalCard/GoalCard';
 import PersonCard from './components/PersonCard/PersonCard';
 import SpinModal from './components/SpinModal/SpinModal';
+import DecisionLog from './components/DecisionLog/DecisionLog';
 import './App.css';
 
 const STORAGE_KEY = 'funwithtasks_v3';
@@ -211,6 +212,9 @@ export default function App() {
             </div>
           </section>
         </main>
+
+        {/* ── Decision Log (right) ─────────────────────────── */}
+        <DecisionLog logs={state.logs ?? []} dispatch={dispatch} />
       </div>
 
       {/* Drag Overlay — ghost chip while dragging */}

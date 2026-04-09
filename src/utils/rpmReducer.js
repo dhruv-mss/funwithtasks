@@ -11,6 +11,7 @@ export const initialState = {
   goals: [],
   people: [],
   completedToday: { count: 0, date: '' },
+  logs: [],
 };
 
 function todayStr() {
@@ -203,6 +204,27 @@ export function rpmReducer(state, action) {
         ),
       };
     }
+
+    // ── Decision Logs ──────────────────────────────────────────────
+    case 'ADD_LOG':
+      return {
+        ...state,
+        logs: [
+          {
+            id: crypto.randomUUID(),
+            type: action.payload.type, // 'decision' | 'note'
+            content: action.payload.content.trim(),
+            createdAt: Date.now(),
+          },
+          ...state.logs,
+        ],
+      };
+
+    case 'DELETE_LOG':
+      return {
+        ...state,
+        logs: state.logs.filter((l) => l.id !== action.payload.id),
+      };
 
     default:
       return state;

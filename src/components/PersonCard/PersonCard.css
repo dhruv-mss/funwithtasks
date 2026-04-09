@@ -1,16 +1,17 @@
 .person-card {
   flex-shrink: 0;
   width: 200px;
-  background: #16162e;
-  border: 1px solid #2a2a50;
+  background: #ffffff;
+  border: 1px solid #e2deff;
   border-radius: 12px;
   overflow: hidden;
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  box-shadow: 0 2px 8px rgba(100, 90, 180, 0.06);
 }
 
 .person-card--over {
   border-color: #14b8a6;
-  box-shadow: 0 0 0 2px #14b8a633;
+  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15);
 }
 
 .person-card__header {
@@ -18,16 +19,17 @@
   align-items: center;
   gap: 8px;
   padding: 10px 10px 8px;
-  border-bottom: 1px solid #2a2a50;
+  border-bottom: 1px solid #eeeaff;
+  background: #faf8ff;
 }
 
 .person-card__avatar {
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: #14b8a620;
-  border: 1px solid #14b8a6;
-  color: #14b8a6;
+  background: #d1faf5;
+  border: 1.5px solid #14b8a6;
+  color: #0d9488;
   font-size: 12px;
   font-weight: 700;
   display: flex;
@@ -40,7 +42,7 @@
   flex: 1;
   font-size: 13px;
   font-weight: 600;
-  color: #c0c0e0;
+  color: #2a2545;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -52,7 +54,7 @@
   border-radius: 4px;
   border: none;
   background: transparent;
-  color: #333355;
+  color: #c0bcd8;
   font-size: 16px;
   cursor: pointer;
   display: flex;
@@ -61,7 +63,7 @@
   padding: 0;
   transition: color 0.15s, background 0.15s;
 }
-.person-card__delete:hover { color: #ef4444; background: #3a1515; }
+.person-card__delete:hover { color: #ef4444; background: #fee2e2; }
 
 .person-card__tasks {
   padding: 6px;
@@ -70,15 +72,17 @@
   gap: 4px;
   min-height: 52px;
   transition: background 0.15s;
+  background: #fff;
 }
 
 .person-card__tasks--over {
-  background: #0e2020;
+  background: #d1faf5;
 }
 
 .person-card__hint {
   font-size: 11px;
-  color: #333355;
+  color: #c0bcd8;
   text-align: center;
   padding: 10px 0;
+  font-style: italic;
 }

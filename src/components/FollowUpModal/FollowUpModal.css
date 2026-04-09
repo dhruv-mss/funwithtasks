@@ -11,20 +11,20 @@
   font-weight: 700;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: #14b8a6;
+  color: #0d9488;
 }
 
 .followup__title {
   margin: 0;
   font-size: 20px;
   font-weight: 800;
-  color: #e0e0f0;
+  color: #1a1630;
 }
 
 .followup__sub {
   margin: -6px 0 0;
   font-size: 12px;
-  color: #555570;
+  color: #8e8aad;
 }
 
 .followup__list {
@@ -34,10 +34,11 @@
 }
 
 .followup__person {
-  background: #16162e;
-  border: 1px solid #2a2a50;
+  background: #fff;
+  border: 1px solid #e2deff;
   border-radius: 10px;
   overflow: hidden;
+  box-shadow: 0 1px 4px rgba(100, 90, 180, 0.06);
 }
 
 .followup__person-header {
@@ -45,17 +46,17 @@
   align-items: center;
   gap: 8px;
   padding: 8px 10px;
-  background: #1a1a35;
-  border-bottom: 1px solid #2a2a50;
+  background: #faf8ff;
+  border-bottom: 1px solid #eeeaff;
 }
 
 .followup__avatar {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: #14b8a620;
-  border: 1px solid #14b8a6;
-  color: #14b8a6;
+  background: #d1faf5;
+  border: 1.5px solid #14b8a6;
+  color: #0d9488;
   font-size: 11px;
   font-weight: 700;
   display: flex;
@@ -68,14 +69,14 @@
   flex: 1;
   font-size: 13px;
   font-weight: 600;
-  color: #c0c0e0;
+  color: #2a2545;
 }
 
 .followup__count {
   font-size: 10px;
   font-weight: 700;
-  background: #14b8a620;
-  color: #14b8a6;
+  background: #d1faf5;
+  color: #0d9488;
   border-radius: 99px;
   padding: 1px 7px;
 }
@@ -85,7 +86,7 @@
   align-items: center;
   gap: 8px;
   padding: 7px 10px;
-  border-bottom: 1px solid #1e1e38;
+  border-bottom: 1px solid #f4f2ff;
 }
 
 .followup__task:last-child { border-bottom: none; }
@@ -100,7 +101,7 @@
 .followup__task-name {
   flex: 1;
   font-size: 13px;
-  color: #9090c0;
+  color: #4d4970;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -117,22 +118,22 @@
 .followup__timer-btn {
   padding: 4px 7px;
   border-radius: 5px;
-  border: 1px solid #14b8a644;
+  border: 1px solid #99f6e4;
   background: transparent;
-  color: #14b8a6;
+  color: #0d9488;
   font-size: 11px;
   font-weight: 700;
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s;
   white-space: nowrap;
 }
-.followup__timer-btn:hover { background: #14b8a6; color: #12121e; border-color: #14b8a6; }
+.followup__timer-btn:hover { background: #14b8a6; color: #fff; border-color: #14b8a6; }
 
 .followup__done-btn {
   width: 24px;
   height: 24px;
   border-radius: 4px;
-  border: 1px solid #22c55e44;
+  border: 1px solid #bbf7d0;
   background: transparent;
   color: #22c55e;
   font-size: 12px;
@@ -143,18 +144,18 @@
   flex-shrink: 0;
   transition: background 0.15s;
 }
-.followup__done-btn:hover { background: #1a3020; }
+.followup__done-btn:hover { background: #dcfce7; }
 
 .followup__spin-again {
   width: 100%;
   padding: 11px;
   border-radius: 8px;
-  border: 1px solid #333355;
-  background: #1a1a2e;
-  color: #7070a0;
+  border: 1px solid #e2deff;
+  background: #faf8ff;
+  color: #8e8aad;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
 }
-.followup__spin-again:hover { background: #222240; color: #a0a0c0; }
+.followup__spin-again:hover { background: #ede9ff; color: #6b59e8; }

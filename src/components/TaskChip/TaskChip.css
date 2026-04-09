@@ -4,17 +4,19 @@
   gap: 6px;
   padding: 6px 8px;
   border-radius: 8px;
-  background: #1e1e38;
-  border: 1px solid #2e2e50;
+  background: #ffffff;
+  border: 1px solid #e2deff;
   cursor: grab;
-  transition: background 0.15s, box-shadow 0.15s;
+  transition: background 0.15s, box-shadow 0.15s, border-color 0.15s;
   user-select: none;
   touch-action: none;
+  box-shadow: 0 1px 3px rgba(100, 90, 180, 0.06);
 }
 
 .task-chip:hover {
-  background: #252542;
+  background: #faf8ff;
   border-color: #7c6af7;
+  box-shadow: 0 2px 8px rgba(124, 106, 247, 0.12);
 }
 
 .task-chip:hover .task-chip__actions {
@@ -22,16 +24,18 @@
 }
 
 .task-chip--star {
-  border-color: #f59e0b55;
-  background: #201c10;
+  border-color: #f59e0b;
+  background: #fffbf0;
+  box-shadow: 0 1px 3px rgba(245, 158, 11, 0.1);
 }
 
 .task-chip--star:hover {
-  border-color: #f59e0b;
+  border-color: #d97706;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.2);
 }
 
 .task-chip--dragging {
-  box-shadow: 0 8px 24px rgba(124, 106, 247, 0.4);
+  box-shadow: 0 8px 24px rgba(124, 106, 247, 0.3);
   cursor: grabbing;
   z-index: 999;
 }
@@ -51,7 +55,7 @@
 .task-chip__name {
   flex: 1;
   font-size: 13px;
-  color: #d0d0f0;
+  color: #2a2545;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -65,7 +69,7 @@
 
 .task-chip__time {
   font-size: 10px;
-  color: #555570;
+  color: #a09ac0;
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -94,18 +98,11 @@
   line-height: 1;
 }
 
-.task-chip__btn--done {
-  color: #22c55e;
-}
-.task-chip__btn--done:hover { background: #1a3020; }
+.task-chip__btn--done { color: #22c55e; }
+.task-chip__btn--done:hover { background: #dcfce7; }
 
-.task-chip__btn--unassign {
-  color: #7c6af7;
-}
-.task-chip__btn--unassign:hover { background: #1e1a40; }
+.task-chip__btn--unassign { color: #7c6af7; }
+.task-chip__btn--unassign:hover { background: #ede9ff; }
 
-.task-chip__btn--del {
-  color: #555570;
-  font-size: 14px;
-}
-.task-chip__btn--del:hover { color: #ef4444; background: #3a1515; }
+.task-chip__btn--del { color: #c0bcd8; font-size: 14px; }
+.task-chip__btn--del:hover { color: #ef4444; background: #fee2e2; }

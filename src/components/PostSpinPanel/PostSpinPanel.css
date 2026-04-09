@@ -8,8 +8,8 @@
 }
 
 .post-spin__selected {
-  background: #1a1a35;
-  border: 1px solid #333355;
+  background: #faf8ff;
+  border: 1px solid #e2deff;
   border-radius: 14px;
   padding: 20px;
   display: flex;
@@ -30,7 +30,7 @@
 .post-spin__task-name {
   font-size: 18px;
   font-weight: 700;
-  color: #e0e0f0;
+  color: #1a1630;
   line-height: 1.3;
   word-break: break-word;
 }
@@ -57,7 +57,7 @@
   font-weight: 600;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: #555570;
+  color: #a09ac0;
   text-align: center;
 }
 
@@ -73,7 +73,7 @@
   border-radius: 10px;
   border: 2px solid #7c6af7;
   background: transparent;
-  color: #a090ff;
+  color: #7c6af7;
   font-size: 20px;
   font-weight: 700;
   cursor: pointer;
@@ -105,11 +105,12 @@
 }
 
 .post-spin__action-btn--again {
-  background: #222240;
-  color: #b0b0d8;
-  border: 1px solid #333355;
+  background: #faf8ff;
+  color: #8e8aad;
+  border: 1px solid #e2deff;
 }
 
 .post-spin__action-btn--again:hover {
-  background: #2a2a50;
+  background: #ede9ff;
+  color: #6b59e8;
 }
