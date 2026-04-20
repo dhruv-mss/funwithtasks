@@ -8,7 +8,7 @@ function TimerRow({ task, onStartTimer }) {
         className="goal-result__dot"
         style={{ background: PRIORITY_COLORS[task.priority] }}
       />
-      <span className="goal-result__task-name">{task.name}</span>
+      <span className="goal-result__task-name" title={task.name}>{task.name}</span>
       <div className="goal-result__timer-btns">
         {[15, 30, 60].map((min) => (
           <button

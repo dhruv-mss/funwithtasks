@@ -15,19 +15,20 @@ import GoalCard from './components/GoalCard/GoalCard';
 import PersonCard from './components/PersonCard/PersonCard';
 import SpinModal from './components/SpinModal/SpinModal';
 import DecisionLog from './components/DecisionLog/DecisionLog';
+import DashboardView from './components/DashboardView/DashboardView';
 import './App.css';
 
 const STORAGE_KEY = 'funwithtasks_v3';
 
 const COMPLETION_MESSAGES = [
-  'First one down. Let\'s keep the momentum!',
-  'Two done. You\'re building a streak!',
+  "First one down. Let's keep the momentum!",
+  "Two done. You're building a streak!",
   'Three tasks cleared. You\'re on a roll!',
   'Four down. Deep focus is your superpower.',
   'Five tasks! You\'re absolutely crushing it.',
   'Six done. The best version of you showed up today.',
   'Seven tasks cleared. Legendary work ethic.',
-  'Eight down. You\'re in the zone — stay there!',
+  "Eight down. You're in the zone — stay there!",
   'Nine tasks! You make it look effortless.',
   'Ten tasks completed. Hall of fame performance.',
 ];
@@ -36,12 +37,11 @@ export default function App() {
   const [persistedState, setPersistedState] = useLocalStorage(STORAGE_KEY, initialState);
   const [state, dispatch] = useReducer(rpmReducer, { ...initialState, ...persistedState });
   const [spinOpen, setSpinOpen] = useState(false);
+  const [view, setView] = useState('rpm'); // 'rpm' | 'dashboard'
   const [newPersonName, setNewPersonName] = useState('');
   const [addingPerson, setAddingPerson] = useState(false);
-  const [activeTask, setActiveTask] = useState(null); // drag overlay task
+  const [activeTask, setActiveTask] = useState(null);
 
-  // Patch: handle _ADD_AND_ASSIGN composite action via useEffect
-  // (GoalCard dispatches this; we intercept it here)
   const patchedDispatch = (action) => {
     if (action.type === '_ADD_AND_ASSIGN') {
       dispatch({
@@ -68,7 +68,6 @@ export default function App() {
     setActiveTask(null);
     if (!over) return;
     const taskId = active.id;
-
     if (over.id === 'pool') {
       dispatch({ type: 'UNASSIGN_TASK', payload: { taskId } });
     } else if (over.id.startsWith('goal-')) {
@@ -112,25 +111,36 @@ export default function App() {
           completedToday={state.completedToday}
         />
 
-        {/* ── RPM Board (main) ─────────────────────────────── */}
+        {/* ── Main Area (middle) ───────────────────────────── */}
         <main className="rpm-board">
           <div className="rpm-board__header">
-            <div className="rpm-board__title-row">
-              <h1 className="rpm-board__title">RPM Board</h1>
-              {completedCount > 0 && (
-                <div className="rpm-board__done">
-                  <span className="rpm-board__done-count">✓ {completedCount} done</span>
-                  {completionMsg && (
-                    <span className="rpm-board__done-msg">{completionMsg}</span>
-                  )}
-                </div>
-              )}
+            {/* View toggle tabs */}
+            <div className="view-tabs">
+              <button
+                className={`view-tab ${view === 'rpm' ? 'view-tab--active' : ''}`}
+                onClick={() => setView('rpm')}
+              >
+                📋 RPM Board
+              </button>
+              <button
+                className={`view-tab ${view === 'dashboard' ? 'view-tab--active' : ''}`}
+                onClick={() => setView('dashboard')}
+              >
+                🌅 Today's Focus
+              </button>
             </div>
 
-            <button
-              className="spin-card"
-              onClick={() => setSpinOpen(true)}
-            >
+            {/* Done count badge (RPM view only) */}
+            {view === 'rpm' && completedCount > 0 && (
+              <div className="rpm-board__done">
+                <span className="rpm-board__done-count">✓ {completedCount} done</span>
+                {completionMsg && (
+                  <span className="rpm-board__done-msg">{completionMsg}</span>
+                )}
+              </div>
+            )}
+
+            <button className="spin-card" onClick={() => setSpinOpen(true)}>
               <span className="spin-card__icon">🎯</span>
               <div className="spin-card__text">
                 <span className="spin-card__title">Spin Tasks</span>
@@ -141,83 +151,94 @@ export default function App() {
             </button>
           </div>
 
-          {/* ── Goals row ──────────────────────────────────── */}
-          <section className="rpm-board__section">
-            <div className="rpm-board__section-header">
-              <span className="rpm-board__section-label">Goals</span>
-              <button
-                className="rpm-board__add-btn"
-                onClick={() => dispatch({ type: 'ADD_GOAL', payload: { title: 'New Goal' } })}
-              >
-                + New Goal
-              </button>
-            </div>
-            <div className="rpm-board__cards">
-              {state.goals.length === 0 && (
-                <div className="rpm-board__empty">
-                  Create goals, then drag tasks from the pool into them.
+          {view === 'rpm' ? (
+            <>
+              {/* ── Goals row ──────────────────────────────────── */}
+              <section className="rpm-board__section">
+                <div className="rpm-board__section-header">
+                  <span className="rpm-board__section-label">Goals</span>
+                  <button
+                    className="rpm-board__add-btn"
+                    onClick={() => dispatch({ type: 'ADD_GOAL', payload: { title: 'New Goal' } })}
+                  >
+                    + New Goal
+                  </button>
                 </div>
-              )}
-              {state.goals.map((goal) => (
-                <GoalCard
-                  key={goal.id}
-                  goal={goal}
-                  tasks={state.tasks}
-                  dispatch={patchedDispatch}
-                />
-              ))}
-            </div>
-          </section>
+                <div className="rpm-board__cards">
+                  {state.goals.length === 0 && (
+                    <div className="rpm-board__empty">
+                      Create goals, then drag tasks from the pool into them.
+                    </div>
+                  )}
+                  {state.goals.map((goal) => (
+                    <GoalCard
+                      key={goal.id}
+                      goal={goal}
+                      tasks={state.tasks}
+                      dispatch={patchedDispatch}
+                    />
+                  ))}
+                </div>
+              </section>
 
-          {/* ── People / Delegation row ─────────────────────── */}
-          <section className="rpm-board__section">
-            <div className="rpm-board__section-header">
-              <span className="rpm-board__section-label">Delegated To</span>
-              {!addingPerson ? (
-                <button
-                  className="rpm-board__add-btn"
-                  onClick={() => setAddingPerson(true)}
-                >
-                  + Add Person
-                </button>
-              ) : (
-                <form className="rpm-board__person-form" onSubmit={handleAddPerson}>
-                  <input
-                    className="rpm-board__person-input"
-                    autoFocus
-                    placeholder="Name…"
-                    value={newPersonName}
-                    onChange={(e) => setNewPersonName(e.target.value)}
-                    onKeyDown={(e) => { if (e.key === 'Escape') setAddingPerson(false); }}
-                  />
-                  <button type="submit" className="rpm-board__person-submit">Add</button>
-                  <button type="button" className="rpm-board__person-cancel" onClick={() => setAddingPerson(false)}>×</button>
-                </form>
-              )}
-            </div>
-            <div className="rpm-board__cards">
-              {state.people.length === 0 && (
-                <div className="rpm-board__empty">
-                  Add people and drag tasks to delegate.
+              {/* ── People / Delegation row ─────────────────────── */}
+              <section className="rpm-board__section">
+                <div className="rpm-board__section-header">
+                  <span className="rpm-board__section-label">Delegated To</span>
+                  {!addingPerson ? (
+                    <button
+                      className="rpm-board__add-btn"
+                      onClick={() => setAddingPerson(true)}
+                    >
+                      + Add Person
+                    </button>
+                  ) : (
+                    <form className="rpm-board__person-form" onSubmit={handleAddPerson}>
+                      <input
+                        className="rpm-board__person-input"
+                        autoFocus
+                        placeholder="Name…"
+                        value={newPersonName}
+                        onChange={(e) => setNewPersonName(e.target.value)}
+                        onKeyDown={(e) => { if (e.key === 'Escape') setAddingPerson(false); }}
+                      />
+                      <button type="submit" className="rpm-board__person-submit">Add</button>
+                      <button type="button" className="rpm-board__person-cancel" onClick={() => setAddingPerson(false)}>×</button>
+                    </form>
+                  )}
                 </div>
-              )}
-              {state.people.map((person) => (
-                <PersonCard
-                  key={person.id}
-                  person={person}
-                  tasks={state.tasks}
-                  dispatch={patchedDispatch}
-                />
-              ))}
-            </div>
-          </section>
+                <div className="rpm-board__cards">
+                  {state.people.length === 0 && (
+                    <div className="rpm-board__empty">
+                      Add people and drag tasks to delegate.
+                    </div>
+                  )}
+                  {state.people.map((person) => (
+                    <PersonCard
+                      key={person.id}
+                      person={person}
+                      tasks={state.tasks}
+                      dispatch={patchedDispatch}
+                    />
+                  ))}
+                </div>
+              </section>
+            </>
+          ) : (
+            <DashboardView
+              dashboard={state.dashboard || {}}
+              tasks={state.tasks}
+              people={state.people}
+              dispatch={patchedDispatch}
+            />
+          )}
         </main>
 
         {/* ── Decision Log (right) ─────────────────────────── */}
         <DecisionLog logs={state.logs ?? []} dispatch={dispatch} />
       </div>
 
-      {/* Drag Overlay — ghost chip while dragging */}
+      {/* Drag Overlay */}
       <DragOverlay>
         {activeTask && (
           <div className="drag-overlay-chip">

@@ -7,11 +7,59 @@ const TYPE_META = {
 };
 
 function formatTime(ts) {
-  const d = new Date(ts);
-  return d.toLocaleString(undefined, {
-    month: 'short', day: 'numeric',
-    hour: '2-digit', minute: '2-digit',
+  return new Date(ts).toLocaleString(undefined, {
+    month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit',
   });
+}
+
+function ReplyThread({ logId, replies = [], dispatch }) {
+  const [open, setOpen] = useState(false);
+  const [text, setText] = useState('');
+
+  function submit(e) {
+    e.preventDefault();
+    if (!text.trim()) return;
+    dispatch({ type: 'ADD_LOG_REPLY', payload: { logId, content: text.trim() } });
+    setText('');
+    setOpen(false);
+  }
+
+  return (
+    <div className="dlog__replies">
+      {replies.map((r) => (
+        <div key={r.id} className="dlog__reply">
+          <p className="dlog__reply-content">{r.content}</p>
+          <div className="dlog__reply-footer">
+            <span className="dlog__reply-time">{formatTime(r.createdAt)}</span>
+            <button
+              className="dlog__reply-del"
+              onClick={() => dispatch({ type: 'DELETE_LOG_REPLY', payload: { logId, replyId: r.id } })}
+            >×</button>
+          </div>
+        </div>
+      ))}
+
+      {open ? (
+        <form className="dlog__reply-form" onSubmit={submit}>
+          <textarea
+            className="dlog__reply-textarea"
+            placeholder="Write a reply…"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            rows={2}
+            autoFocus
+            onKeyDown={(e) => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) submit(e); }}
+          />
+          <div className="dlog__reply-btns">
+            <button type="submit" className="dlog__reply-submit" disabled={!text.trim()}>Reply</button>
+            <button type="button" className="dlog__reply-close" onClick={() => { setOpen(false); setText(''); }}>Cancel</button>
+          </div>
+        </form>
+      ) : (
+        <button className="dlog__reply-btn" onClick={() => setOpen(true)}>↩ Reply</button>
+      )}
+    </div>
+  );
 }
 
 export default function DecisionLog({ logs = [], dispatch }) {
@@ -52,15 +100,9 @@ export default function DecisionLog({ logs = [], dispatch }) {
           value={content}
           onChange={(e) => setContent(e.target.value)}
           rows={3}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) handleAdd(e);
-          }}
+          onKeyDown={(e) => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) handleAdd(e); }}
         />
-        <button
-          type="submit"
-          className="dlog__submit"
-          disabled={!content.trim()}
-        >
+        <button type="submit" className="dlog__submit" disabled={!content.trim()}>
           Add Entry
         </button>
       </form>
@@ -84,12 +126,13 @@ export default function DecisionLog({ logs = [], dispatch }) {
                 <button
                   className="dlog__entry-del"
                   onClick={() => dispatch({ type: 'DELETE_LOG', payload: { id: log.id } })}
-                  title="Delete"
-                >
-                  ×
-                </button>
+                  title="Delete entry"
+                >×</button>
               </div>
-              <p className="dlog__entry-content">{log.content}</p>
+              <div className="dlog__entry-body">
+                <p className="dlog__entry-content">{log.content}</p>
+              </div>
+              <ReplyThread logId={log.id} replies={log.replies || []} dispatch={dispatch} />
             </div>
           );
         })}

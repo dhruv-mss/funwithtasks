@@ -1,4 +1,4 @@
-import { PRIORITY_COLORS } from '../../utils/taskReducer';
+import { PRIORITY_COLORS } from '../../utils/rpmReducer';
 import './PostSpinPanel.css';
 
 export default function PostSpinPanel({ task, onSpinAgain, onStartTimer }) {

@@ -31,7 +31,7 @@ export default function FollowUpModal({ people, tasks, dispatch, onSpinAgain, on
                   className="followup__dot"
                   style={{ background: PRIORITY_COLORS[task.priority] }}
                 />
-                <span className="followup__task-name">{task.name}</span>
+                <span className="followup__task-name" title={task.name}>{task.name}</span>
                 <div className="followup__task-actions">
                   {[15, 30, 60].map((min) => (
                     <button

@@ -246,6 +246,38 @@
   flex-shrink: 0;
 }
 
+/* ── View Toggle Tabs ────────────────────────────────────── */
+.view-tabs {
+  display: flex;
+  gap: 3px;
+  background: #f0eefe;
+  border-radius: 10px;
+  padding: 3px;
+  flex-shrink: 0;
+}
+
+.view-tab {
+  padding: 6px 13px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: #8e8aad;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.view-tab--active {
+  background: #fff;
+  color: #1a1630;
+  box-shadow: 0 1px 4px rgba(100, 90, 180, 0.15);
+}
+
+.view-tab:hover:not(.view-tab--active) { color: #6b59e8; }
+
 /* ── Responsive ──────────────────────────────────────────── */
 @media (max-width: 900px) {
   .app {

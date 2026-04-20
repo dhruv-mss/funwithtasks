@@ -12,13 +12,27 @@ export const initialState = {
   people: [],
   completedToday: { count: 0, date: '' },
   logs: [],
+  dashboard: {
+    date: '',
+    objective: '',
+    sections: {
+      eatFrog: null,
+      product: null,
+      marketing: null,
+      personal: null,
+      hobbies: null,
+      rpmProject: null,
+    },
+    meetings: [],
+    teamFocus: {},
+    routines: { read: false, delegate: false, review: false, kriya: false },
+  },
 };
 
 function todayStr() {
   return new Date().toISOString().split('T')[0];
 }
 
-// Returns task IDs that are in any goal or person section
 function categorizedIds(state) {
   return new Set([
     ...state.goals.flatMap((g) => g.taskIds),
@@ -31,7 +45,6 @@ export function getUncategorized(state) {
   return state.tasks.filter((t) => !cat.has(t.id));
 }
 
-// Remove a taskId from all goals and people lists
 function removeTaskFromBuckets(state, taskId) {
   return {
     ...state,
@@ -150,7 +163,6 @@ export function rpmReducer(state, action) {
 
     // ── Drag & Drop ────────────────────────────────────────────────
     case 'ASSIGN_TASK': {
-      // Remove from all buckets first, then add to destination
       const cleaned = removeTaskFromBuckets(state, action.payload.taskId);
       const { dest } = action.payload;
       if (dest.type === 'goal') {
@@ -179,7 +191,6 @@ export function rpmReducer(state, action) {
     case 'UNASSIGN_TASK':
       return removeTaskFromBuckets(state, action.payload.taskId);
 
-    // Composite: add a new task directly into a goal (used by GoalCard mass-action picker)
     case '_ASSIGN_NEW': {
       const newId = crypto.randomUUID();
       const withTask = {
@@ -212,9 +223,10 @@ export function rpmReducer(state, action) {
         logs: [
           {
             id: crypto.randomUUID(),
-            type: action.payload.type, // 'decision' | 'note'
+            type: action.payload.type,
             content: action.payload.content.trim(),
             createdAt: Date.now(),
+            replies: [],
           },
           ...state.logs,
         ],
@@ -224,6 +236,112 @@ export function rpmReducer(state, action) {
       return {
         ...state,
         logs: state.logs.filter((l) => l.id !== action.payload.id),
+      };
+
+    case 'ADD_LOG_REPLY':
+      return {
+        ...state,
+        logs: state.logs.map((l) =>
+          l.id === action.payload.logId
+            ? {
+                ...l,
+                replies: [
+                  ...(l.replies || []),
+                  {
+                    id: crypto.randomUUID(),
+                    content: action.payload.content.trim(),
+                    createdAt: Date.now(),
+                  },
+                ],
+              }
+            : l
+        ),
+      };
+
+    case 'DELETE_LOG_REPLY':
+      return {
+        ...state,
+        logs: state.logs.map((l) =>
+          l.id === action.payload.logId
+            ? { ...l, replies: (l.replies || []).filter((r) => r.id !== action.payload.replyId) }
+            : l
+        ),
+      };
+
+    // ── Dashboard ──────────────────────────────────────────────────
+    case 'SET_DASHBOARD_DATE':
+      return {
+        ...state,
+        dashboard: {
+          ...(state.dashboard || {}),
+          date: action.payload.date,
+          routines: { read: false, delegate: false, review: false, kriya: false },
+        },
+      };
+
+    case 'SET_DASHBOARD_OBJECTIVE':
+      return {
+        ...state,
+        dashboard: { ...(state.dashboard || {}), objective: action.payload.objective },
+      };
+
+    case 'SET_SECTION_TASK':
+      return {
+        ...state,
+        dashboard: {
+          ...(state.dashboard || {}),
+          sections: {
+            ...((state.dashboard || {}).sections || {}),
+            [action.payload.section]: action.payload.taskId,
+          },
+        },
+      };
+
+    case 'ADD_MEETING':
+      return {
+        ...state,
+        dashboard: {
+          ...(state.dashboard || {}),
+          meetings: [
+            ...((state.dashboard || {}).meetings || []),
+            { id: crypto.randomUUID(), title: action.payload.title, time: action.payload.time },
+          ],
+        },
+      };
+
+    case 'DELETE_MEETING':
+      return {
+        ...state,
+        dashboard: {
+          ...(state.dashboard || {}),
+          meetings: ((state.dashboard || {}).meetings || []).filter(
+            (m) => m.id !== action.payload.id
+          ),
+        },
+      };
+
+    case 'SET_TEAM_FOCUS':
+      return {
+        ...state,
+        dashboard: {
+          ...(state.dashboard || {}),
+          teamFocus: {
+            ...((state.dashboard || {}).teamFocus || {}),
+            [action.payload.personId]: action.payload.taskId,
+          },
+        },
+      };
+
+    case 'TOGGLE_ROUTINE':
+      return {
+        ...state,
+        dashboard: {
+          ...(state.dashboard || {}),
+          routines: {
+            ...((state.dashboard || {}).routines || {}),
+            [action.payload.routineId]: !((state.dashboard || {}).routines || {})[action.payload.routineId],
+          },
+        },
       };
 
     default:
