@@ -16,13 +16,14 @@ export const initialState = {
     date: '',
     objective: '',
     sections: {
-      eatFrog: null,
-      product: null,
-      marketing: null,
-      personal: null,
-      hobbies: null,
-      rpmProject: null,
+      eatFrog: null,      // single taskId
+      product: [],        // array of taskIds
+      marketing: [],
+      personal: [],
+      hobbies: [],
+      rpmProject: [],
     },
+    reviewToday: [],      // delegated task IDs to review today
     meetings: [],
     teamFocus: {},
     routines: { read: false, delegate: false, review: false, kriya: false },
@@ -60,6 +61,25 @@ function removeTaskFromBuckets(state, taskId) {
   };
 }
 
+// Remove a task from all dashboard sections and review list
+function cleanDashboardTask(state, taskId) {
+  const db = state.dashboard || {};
+  const sections = db.sections || {};
+  return {
+    ...state,
+    dashboard: {
+      ...db,
+      sections: Object.fromEntries(
+        Object.entries(sections).map(([k, v]) => [
+          k,
+          Array.isArray(v) ? v.filter((id) => id !== taskId) : (v === taskId ? null : v),
+        ])
+      ),
+      reviewToday: (db.reviewToday || []).filter((id) => id !== taskId),
+    },
+  };
+}
+
 export function rpmReducer(state, action) {
   switch (action.type) {
     // ── Tasks ──────────────────────────────────────────────────────
@@ -83,18 +103,20 @@ export function rpmReducer(state, action) {
       const prevCount =
         state.completedToday.date === today ? state.completedToday.count : 0;
       const cleaned = removeTaskFromBuckets(state, action.payload.id);
+      const withDash = cleanDashboardTask(cleaned, action.payload.id);
       return {
-        ...cleaned,
-        tasks: cleaned.tasks.filter((t) => t.id !== action.payload.id),
+        ...withDash,
+        tasks: withDash.tasks.filter((t) => t.id !== action.payload.id),
         completedToday: { count: prevCount + 1, date: today },
       };
     }
 
     case 'DELETE_TASK': {
       const cleaned = removeTaskFromBuckets(state, action.payload.id);
+      const withDash = cleanDashboardTask(cleaned, action.payload.id);
       return {
-        ...cleaned,
-        tasks: cleaned.tasks.filter((t) => t.id !== action.payload.id),
+        ...withDash,
+        tasks: withDash.tasks.filter((t) => t.id !== action.payload.id),
       };
     }
 
@@ -276,6 +298,8 @@ export function rpmReducer(state, action) {
           ...(state.dashboard || {}),
           date: action.payload.date,
           routines: { read: false, delegate: false, review: false, kriya: false },
+          reviewToday: [],
+          meetings: [],
         },
       };
 
@@ -296,6 +320,59 @@ export function rpmReducer(state, action) {
           },
         },
       };
+
+    case 'ADD_SECTION_TASK': {
+      const db = state.dashboard || {};
+      const current = Array.isArray(db.sections?.[action.payload.section])
+        ? db.sections[action.payload.section]
+        : [];
+      if (current.includes(action.payload.taskId)) return state;
+      return {
+        ...state,
+        dashboard: {
+          ...db,
+          sections: { ...(db.sections || {}), [action.payload.section]: [...current, action.payload.taskId] },
+        },
+      };
+    }
+
+    case 'REMOVE_SECTION_TASK': {
+      const db = state.dashboard || {};
+      const current = Array.isArray(db.sections?.[action.payload.section])
+        ? db.sections[action.payload.section]
+        : [];
+      return {
+        ...state,
+        dashboard: {
+          ...db,
+          sections: {
+            ...(db.sections || {}),
+            [action.payload.section]: current.filter((id) => id !== action.payload.taskId),
+          },
+        },
+      };
+    }
+
+    case 'ADD_REVIEW_TASK': {
+      const db = state.dashboard || {};
+      const current = db.reviewToday || [];
+      if (current.includes(action.payload.taskId)) return state;
+      return {
+        ...state,
+        dashboard: { ...db, reviewToday: [...current, action.payload.taskId] },
+      };
+    }
+
+    case 'REMOVE_REVIEW_TASK': {
+      const db = state.dashboard || {};
+      return {
+        ...state,
+        dashboard: {
+          ...db,
+          reviewToday: (db.reviewToday || []).filter((id) => id !== action.payload.taskId),
+        },
+      };
+    }
 
     case 'ADD_MEETING':
       return {
