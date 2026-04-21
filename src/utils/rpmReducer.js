@@ -61,10 +61,11 @@ function removeTaskFromBuckets(state, taskId) {
   };
 }
 
-// Remove a task from all dashboard sections and review list
+// Remove a task from all dashboard sections, review list, and team focus
 function cleanDashboardTask(state, taskId) {
   const db = state.dashboard || {};
   const sections = db.sections || {};
+  const teamFocus = db.teamFocus || {};
   return {
     ...state,
     dashboard: {
@@ -76,6 +77,12 @@ function cleanDashboardTask(state, taskId) {
         ])
       ),
       reviewToday: (db.reviewToday || []).filter((id) => id !== taskId),
+      teamFocus: Object.fromEntries(
+        Object.entries(teamFocus).map(([pid, val]) => [
+          pid,
+          Array.isArray(val) ? val.filter((id) => id !== taskId) : (val === taskId ? [] : val),
+        ])
+      ),
     },
   };
 }
@@ -397,17 +404,37 @@ export function rpmReducer(state, action) {
         },
       };
 
-    case 'SET_TEAM_FOCUS':
+    case 'ADD_TEAM_FOCUS_TASK': {
+      const db = state.dashboard || {};
+      const current = Array.isArray(db.teamFocus?.[action.payload.personId])
+        ? db.teamFocus[action.payload.personId]
+        : [];
+      if (current.includes(action.payload.taskId)) return state;
       return {
         ...state,
         dashboard: {
-          ...(state.dashboard || {}),
+          ...db,
+          teamFocus: { ...(db.teamFocus || {}), [action.payload.personId]: [...current, action.payload.taskId] },
+        },
+      };
+    }
+
+    case 'REMOVE_TEAM_FOCUS_TASK': {
+      const db = state.dashboard || {};
+      const current = Array.isArray(db.teamFocus?.[action.payload.personId])
+        ? db.teamFocus[action.payload.personId]
+        : [];
+      return {
+        ...state,
+        dashboard: {
+          ...db,
           teamFocus: {
-            ...((state.dashboard || {}).teamFocus || {}),
-            [action.payload.personId]: action.payload.taskId,
+            ...(db.teamFocus || {}),
+            [action.payload.personId]: current.filter((id) => id !== action.payload.taskId),
           },
         },
       };
+    }
 
     case 'TOGGLE_ROUTINE':
       return {

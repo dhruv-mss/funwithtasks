@@ -351,28 +351,37 @@ export default function DashboardView({ dashboard = {}, tasks = [], people = [],
               <div className="dash__card-hd">
                 <span className="dash__col-head" style={{ margin: 0 }}>👥 Team Focus</span>
               </div>
-              {people.map((person) => {
-                const sel = tasks.find((t) => t.id === teamFocus[person.id]);
+              {people.map((person, idx) => {
+                const personTasks  = tasks.filter((t) => person.taskIds.includes(t.id));
+                const selectedIds  = toArr(teamFocus[person.id]);
+                const selectedTasks = selectedIds.map((id) => tasks.find((t) => t.id === id)).filter(Boolean);
                 return (
-                  <div key={person.id} className="dash__team-row">
-                    <span className="dash__team-avatar">{person.name[0]?.toUpperCase()}</span>
-                    <span className="dash__team-name" title={person.name}>{person.name}</span>
-                    <select
-                      className="dash__team-select"
-                      value={teamFocus[person.id] || ''}
-                      title={sel ? sel.name : ''}
-                      onChange={(e) =>
-                        dispatch({
-                          type: 'SET_TEAM_FOCUS',
-                          payload: { personId: person.id, taskId: e.target.value || null },
-                        })
-                      }
-                    >
-                      <option value="">— pick a task —</option>
-                      {tasks.map((t) => (
-                        <option key={t.id} value={t.id}>{t.name}</option>
-                      ))}
-                    </select>
+                  <div key={person.id} className={`dash__person-block ${idx > 0 ? 'dash__person-block--sep' : ''}`}>
+                    <div className="dash__person-hd">
+                      <span className="dash__team-avatar">{person.name[0]?.toUpperCase()}</span>
+                      <span className="dash__team-name" title={person.name}>{person.name}</span>
+                      {selectedTasks.length > 0 && (
+                        <span className="dash__sec-count">{selectedTasks.length}</span>
+                      )}
+                    </div>
+                    {selectedTasks.map((task) => (
+                      <TaskRow
+                        key={task.id}
+                        task={task}
+                        onComplete={() => dispatch({ type: 'COMPLETE_TASK', payload: { id: task.id } })}
+                        onRemove={() => dispatch({ type: 'REMOVE_TEAM_FOCUS_TASK', payload: { personId: person.id, taskId: task.id } })}
+                      />
+                    ))}
+                    {personTasks.length === 0 ? (
+                      <p className="dash__empty" style={{ textAlign: 'left' }}>No tasks delegated yet</p>
+                    ) : (
+                      <TaskSearchPicker
+                        tasks={personTasks}
+                        excludeIds={selectedIds}
+                        onAdd={(taskId) => dispatch({ type: 'ADD_TEAM_FOCUS_TASK', payload: { personId: person.id, taskId } })}
+                        placeholder={`Add task for ${person.name}…`}
+                      />
+                    )}
                   </div>
                 );
               })}
